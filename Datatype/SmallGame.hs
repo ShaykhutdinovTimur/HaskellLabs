@@ -6,15 +6,15 @@ module SmallGame where
         weapon :: Equipment,
         armor :: Equipment,
         buff :: Equipment
-    }
+    } deriving Show
     data Monster = Monster {
         mattack :: Int,
         mdefence :: Int,
         mhealth :: Int,
         loot :: [Equipment]
-    }
+    } deriving Show
 
-    data Equipment = Armor Int | Weapon Int | Buff Int deriving (Eq, Ord)
+    data Equipment = Armor Int | Weapon Int | Buff Int deriving (Eq, Ord, Show)
 
     setEq :: Int -> Equipment -> Player -> Player
     setEq isTake (Armor x) p = p {defence = defence p + isTake * x}
@@ -51,17 +51,38 @@ module SmallGame where
 
     gloriousFight :: Player -> Monster -> Player
     gloriousFight p m = let m' = playerHit p m
-        in if (mhealth m' < 0) then upgradeEquipment (loot m') p
+        in if (mhealth m' <= 0) then upgradeEquipment (loot m') p
             else let p' = monsterHit p m' in
                 if (health p' > 0) then gloriousFight p' m'
-                    else p
+                    else p'
 
 
     gloriousBattle :: Player -> [Monster] -> String
     gloriousBattle p [] = "Victory!"
     gloriousBattle p (x:xs) = let p' = gloriousFight p x in
         if (health p' > 0) then gloriousBattle p' xs
-            else "Player dead"
+            else "the player's dead"
 
 
-    
+    player :: Player
+    player = Player {
+        attack = 12,
+        defence = 3,
+        health = 50,
+        weapon = Weapon 1,
+        armor = Armor 1,
+        buff = Buff 1
+    }
+
+    monsters :: [Monster]
+    monsters = [Monster {
+        mattack = 140,
+        mdefence = 8,
+        mhealth = 4,
+        loot = [Weapon 500]
+    }, Monster {
+        mattack = 140,
+        mdefence = 0,
+        mhealth = 14,
+        loot = [Weapon 4]
+    }]
