@@ -3,18 +3,21 @@ module PrioritySearchTree where
 
     data PST a = Nil | Node {x :: a, y :: a, miny :: a, maxy :: a, left :: PST a, right :: PST a} deriving (Show, Eq)
 
-    buildPST :: (Ord a) => [(a, a)] -> PST a
-    buildPST [] = Nil
-    buildPST list = let
+    buildPSTsortList :: (Ord a) => [(a, a)] -> PST a
+    buildPSTsortList [] = Nil
+    buildPSTsortList list = let
         r@(rootx, rooty) = minimum list
-        list' = sort $ delete r list
+        list' = delete r list
         len = length list'
         (downList, topList) = splitAt (div len 2) list'
-        down = buildPST downList
-        top = buildPST topList
+        down = buildPSTsortList downList
+        top = buildPSTsortList topList
         min_y = if down /= Nil then min (miny down) rooty else rooty
         max_y = if top /= Nil then max (maxy top) rooty else rooty
         in Node {x = rootx, y = rooty, miny = min_y, maxy = max_y, left = down, right = top}
+
+    buildPST :: (Ord a) => [(a, a)] -> PST a
+    buildPST = buildPSTsortList . sort
 
     req :: (Ord a) => PST a -> a -> a -> a -> [(a, a)]
     req Nil _ _ _ = []
