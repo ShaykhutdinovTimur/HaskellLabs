@@ -17,7 +17,7 @@ module PrioritySearchTree where
         in Node {x = rootx, y = rooty, miny = min_y, maxy = max_y, left = down, right = top}
 
     buildPST :: (Ord a) => [(a, a)] -> PST a
-    buildPST = buildPSTsortList . sort
+    buildPST list = buildPSTsortList (sortOn (snd) list)
 
     req :: (Ord a) => PST a -> a -> a -> a -> [(a, a)]
     req Nil _ _ _ = []
