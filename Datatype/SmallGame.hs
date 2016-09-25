@@ -61,7 +61,7 @@ module SmallGame where
     gloriousBattle p [] = "Victory!"
     gloriousBattle p (x:xs) = let p' = gloriousFight p x in
         if (health p' > 0) then gloriousBattle p' xs
-            else "the player's dead"
+            else "the player death"
 
 
     player :: Player
