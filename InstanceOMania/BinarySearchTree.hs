@@ -36,15 +36,14 @@ lowest (Node _ l _) = lowest l
 
 toList :: Tree a -> [a]
 toList Leaf = []
-toList (Node x l r) = x : ((toList l) ++ (toList r))
+toList (Node x l r) = x : (toList l ++ toList r)
 
 fromList :: (Ord a) => [a] -> Tree a
-fromList [] = Leaf
-fromList (x:xs) = insert x (fromList xs)
+fromList = foldr insert Leaf
 
 instance Foldable Tree where
     foldr fun st tree = foldr fun st (toList tree)
 
 instance (Ord a) => Monoid (Tree a) where
     mempty = Leaf
-    mappend x y = foldr (insert) x y
+    mappend = foldr insert

@@ -1,4 +1,5 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FlexibleInstances #-}
 module Set where
 
 import TreePrinters
@@ -28,7 +29,7 @@ instance (Ord a) => Set Tree a where
     next _ Leaf     = Nothing
     next k (Node x l r)
         | k >= x    = lowest r
-        | otherwise = if (next k l == Nothing) then Nothing
+        | otherwise = if isNothing (next k l) then Nothing
                         else Just x
 
     fromList        = BST.fromList
