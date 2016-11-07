@@ -9,7 +9,9 @@ manHeaps (a, b) = filter isCorrectHeaps
     isCorrectHeaps (x, y) = x >= 0 && y >= 0
 
 zeroInMin :: (Int, Int) -> Int
-zeroInMin p@(x, y)
-    | x == 0 && y == 0 = 0
-    | otherwise = 1 + minimum (map (zeroInMin) ([p] >>= manHeaps >>= ))
+zeroInMin p = zeroInMinList [p]
 
+zeroInMinList :: [(Int, Int)] -> Int
+zeroInMinList l
+  | any (\(a, b) -> a == 0 && b == 0) l = 0
+  | otherwise = zeroInMinList (l >>= manHeaps) + 1
