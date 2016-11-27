@@ -12,7 +12,7 @@ find k t@(Node x l r)
 
 insert :: (Ord a) => a -> Tree a -> Writer String (Tree a)
 insert k Leaf = writer (Node k Leaf Leaf, "inserted\n")
-insert k t@(Node x l r)
+insert k (Node x l r)
     | k == x = writer (Node x l r, "not inserted\n")
     | k < x = (insert k l) >>= \g -> writer (Node x g r, "")
     | k > x = (insert k l) >>= \g -> writer (Node x l g, "")
@@ -25,9 +25,9 @@ delete k t@(Node x l r)
     | k == x = writer (deleteRoot t, "deleted " ++ show k)
 
 deleteRoot :: (Ord a, Show a) => Tree a -> Tree a
-deleteRoot (Node x l Leaf) = l
-deleteRoot (Node x Leaf r) = r
-deleteRoot (Node x l r) = Node v l u where
+deleteRoot (Node _ l Leaf) = l
+deleteRoot (Node _ Leaf r) = r
+deleteRoot (Node _ l r) = Node v l u where
     v = lowest r
     u = fst $ runWriter (delete v r)
 
