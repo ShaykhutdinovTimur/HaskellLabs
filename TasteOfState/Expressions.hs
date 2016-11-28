@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 module Expressions where
 
 import Control.Monad.Reader
